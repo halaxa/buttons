@@ -89,6 +89,7 @@
             `;
         }).join('')}
         </div>
+        <div class="h-[env(safe-area-inset-bottom,32px)]"></div>
       `;
     }
 
@@ -97,10 +98,17 @@
         let list = getList().join('\n').replace(/\n+$/, '') + '\n';
 
         main.innerHTML = `
-        <textarea class="w-full h-full p-4 text-lg" id="listArea">${list}</textarea>
+        <div class="relative h-full">
+          <textarea class="w-full h-full p-4 text-lg" id="listArea">${list}</textarea>
+          <button id="doneButton" class="hidden absolute top-2 right-4 text-blue-600 font-semibold">Hotovo</button>
+        </div>
       `;
 
         const area = document.getElementById('listArea');
+        const doneButton = document.getElementById('doneButton');
+        area.addEventListener('focus', () => doneButton.classList.remove('hidden'));
+        area.addEventListener('blur', () => doneButton.classList.add('hidden'));
+        doneButton.addEventListener('click', () => area.blur());
         area.focus();
         area.setSelectionRange(area.value.length, area.value.length);
     }
